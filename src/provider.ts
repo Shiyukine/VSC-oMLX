@@ -297,7 +297,8 @@ export class OmlxLanguageModelChatProvider implements vscode.LanguageModelChatPr
         }
 
         // If over limit, drop oldest messages from the front (keep last N)
-        if (totalTokens > MAX_CONTEXT_TOKENS && messages.length > 2) {
+        // Note: disabled because Github Copilot compact automatically the conversation
+        /*if (totalTokens > MAX_CONTEXT_TOKENS && messages.length > 2) {
             Logger.log(`Context ${totalTokens} tokens exceeds limit ${MAX_CONTEXT_TOKENS}, truncating...`);
             let accumulated = 0;
             let keepFrom = messages.length - 1; // always keep the last message (current turn)
@@ -313,7 +314,7 @@ export class OmlxLanguageModelChatProvider implements vscode.LanguageModelChatPr
             }
             effectiveMessages = messages.slice(keepFrom);
             Logger.log(`Kept ${effectiveMessages.length} of ${messages.length} messages`);
-        }
+        }*/
 
         let emittedText = '';
 
@@ -417,10 +418,9 @@ export class OmlxLanguageModelChatProvider implements vscode.LanguageModelChatPr
             messages: oaiMessages,
             stream: true,
             stream_options: { include_usage: true },
-            max_tokens: MAX_OUTPUT_TOKENS
+            max_tokens: MAX_OUTPUT_TOKENS,
+            stop: ['\n\nUser:', '<|user|>', '<|end|>']
         };
-
-        Logger.log('Sending oaiMessages: ' + JSON.stringify(oaiMessages, null, 2));
 
         if (options.tools && options.tools.length > 0) {
             bodyObj.tools = options.tools.map((t: vscode.LanguageModelChatTool) => ({
