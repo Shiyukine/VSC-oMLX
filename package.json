@@ -1,0 +1,66 @@
+{
+    "name": "vsc-omlx",
+    "displayName": "oMLX Assistant",
+    "description": "Visual Studio Code Extension for oMLX local inference server",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.90.0"
+    },
+    "categories": [
+        "AI",
+        "Chat"
+    ],
+    "main": "./out/extension.js",
+    "activationEvents": [
+        "*"
+    ],
+    "contributes": {
+        "configuration": {
+            "title": "oMLX Assistant",
+            "properties": {
+                "omlx.apiKey": {
+                    "type": "string",
+                    "default": "",
+                    "description": "API Key for oMLX server (if required)"
+                },
+                "omlx.endpoint": {
+                    "type": "string",
+                    "default": "http://127.0.0.1:8000/v1",
+                    "description": "The base URL endpoint for oMLX server"
+                },
+                "omlx.configPath": {
+                    "type": "string",
+                    "default": "~/.omlx/settings.json",
+                    "description": "Path to the oMLX configuration file to read model capabilities"
+                },
+                "omlx.models": {
+                    "type": "array",
+                    "default": [],
+                    "description": "Directly configure your models so they are available immediately. Example: [\"model1\", \"model2\"]",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "languageModelChatProviders": [
+            {
+                "vendor": "omlx",
+                "displayName": "oMLX"
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./"
+    },
+    "devDependencies": {
+        "@types/node": "^20.19.41",
+        "@types/vscode": "^1.90.0",
+        "typescript": "^5.0.0"
+    },
+    "dependencies": {
+        "@microsoft/tiktokenizer": "^1.0.10"
+    }
+}
